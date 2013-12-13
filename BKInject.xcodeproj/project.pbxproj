@@ -8,18 +8,25 @@
 
 /* Begin PBXBuildFile section */
 		86A1457F185A9631000543F0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86A1457E185A9631000543F0 /* Foundation.framework */; };
-		86A14584185A9631000543F0 /* BKInject.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 86A14583185A9631000543F0 /* BKInject.h */; };
-		86A14586185A9631000543F0 /* BKInject.m in Sources */ = {isa = PBXBuildFile; fileRef = 86A14585185A9631000543F0 /* BKInject.m */; };
 		86A1458D185A9631000543F0 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86A1458C185A9631000543F0 /* XCTest.framework */; };
 		86A1458E185A9631000543F0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86A1457E185A9631000543F0 /* Foundation.framework */; };
 		86A14590185A9631000543F0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86A1458F185A9631000543F0 /* UIKit.framework */; };
 		86A14593185A9631000543F0 /* libBKInject.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86A1457B185A9631000543F0 /* libBKInject.a */; };
 		86A14599185A9631000543F0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 86A14597185A9631000543F0 /* InfoPlist.strings */; };
 		86A1459B185A9631000543F0 /* BKInjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 86A1459A185A9631000543F0 /* BKInjectTests.m */; };
+		86A145A8185A985B000543F0 /* NSObject+BKInject.m in Sources */ = {isa = PBXBuildFile; fileRef = 86A145A5185A9678000543F0 /* NSObject+BKInject.m */; };
+		86A145C3185A9BDB000543F0 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86A1458C185A9631000543F0 /* XCTest.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		86A14591185A9631000543F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 86A14573185A9631000543F0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 86A1457A185A9631000543F0;
+			remoteInfo = BKInject;
+		};
+		86A145CD185A9BDB000543F0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 86A14573185A9631000543F0 /* Project object */;
 			proxyType = 1;
@@ -35,7 +42,6 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				86A14584185A9631000543F0 /* BKInject.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,15 +50,15 @@
 /* Begin PBXFileReference section */
 		86A1457B185A9631000543F0 /* libBKInject.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBKInject.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		86A1457E185A9631000543F0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		86A14582185A9631000543F0 /* BKInject-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BKInject-Prefix.pch"; sourceTree = "<group>"; };
-		86A14583185A9631000543F0 /* BKInject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BKInject.h; sourceTree = "<group>"; };
-		86A14585185A9631000543F0 /* BKInject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BKInject.m; sourceTree = "<group>"; };
 		86A1458B185A9631000543F0 /* BKInjectTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BKInjectTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		86A1458C185A9631000543F0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		86A1458F185A9631000543F0 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		86A14596185A9631000543F0 /* BKInjectTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BKInjectTests-Info.plist"; sourceTree = "<group>"; };
 		86A14598185A9631000543F0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		86A1459A185A9631000543F0 /* BKInjectTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BKInjectTests.m; sourceTree = "<group>"; };
+		86A145A4185A9678000543F0 /* NSObject+BKInject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+BKInject.h"; sourceTree = "<group>"; };
+		86A145A5185A9678000543F0 /* NSObject+BKInject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+BKInject.m"; sourceTree = "<group>"; };
+		86A145C2185A9BDB000543F0 /* BKInjectTestsMac.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BKInjectTestsMac.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +81,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		86A145BF185A9BDB000543F0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				86A145C3185A9BDB000543F0 /* XCTest.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -93,6 +107,7 @@
 			children = (
 				86A1457B185A9631000543F0 /* libBKInject.a */,
 				86A1458B185A9631000543F0 /* BKInjectTests.xctest */,
+				86A145C2185A9BDB000543F0 /* BKInjectTestsMac.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -110,19 +125,10 @@
 		86A14580185A9631000543F0 /* BKInject */ = {
 			isa = PBXGroup;
 			children = (
-				86A14583185A9631000543F0 /* BKInject.h */,
-				86A14585185A9631000543F0 /* BKInject.m */,
-				86A14581185A9631000543F0 /* Supporting Files */,
+				86A145A4185A9678000543F0 /* NSObject+BKInject.h */,
+				86A145A5185A9678000543F0 /* NSObject+BKInject.m */,
 			);
 			path = BKInject;
-			sourceTree = "<group>";
-		};
-		86A14581185A9631000543F0 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				86A14582185A9631000543F0 /* BKInject-Prefix.pch */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		86A14594185A9631000543F0 /* BKInjectTests */ = {
@@ -181,6 +187,24 @@
 			productReference = 86A1458B185A9631000543F0 /* BKInjectTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		86A145C1185A9BDB000543F0 /* BKInjectTestsMac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 86A145CF185A9BDB000543F0 /* Build configuration list for PBXNativeTarget "BKInjectTestsMac" */;
+			buildPhases = (
+				86A145BE185A9BDB000543F0 /* Sources */,
+				86A145BF185A9BDB000543F0 /* Frameworks */,
+				86A145C0185A9BDB000543F0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				86A145CE185A9BDB000543F0 /* PBXTargetDependency */,
+			);
+			name = BKInjectTestsMac;
+			productName = BKInjectTestsMac;
+			productReference = 86A145C2185A9BDB000543F0 /* BKInjectTestsMac.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -189,6 +213,14 @@
 			attributes = {
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Brian King";
+				TargetAttributes = {
+					86A1458A185A9631000543F0 = {
+						TestTargetID = 86A1457A185A9631000543F0;
+					};
+					86A145C1185A9BDB000543F0 = {
+						TestTargetID = 86A1457A185A9631000543F0;
+					};
+				};
 			};
 			buildConfigurationList = 86A14576185A9631000543F0 /* Build configuration list for PBXProject "BKInject" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -204,6 +236,7 @@
 			targets = (
 				86A1457A185A9631000543F0 /* BKInject */,
 				86A1458A185A9631000543F0 /* BKInjectTests */,
+				86A145C1185A9BDB000543F0 /* BKInjectTestsMac */,
 			);
 		};
 /* End PBXProject section */
@@ -217,6 +250,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		86A145C0185A9BDB000543F0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -224,7 +264,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				86A14586185A9631000543F0 /* BKInject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -233,6 +272,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				86A1459B185A9631000543F0 /* BKInjectTests.m in Sources */,
+				86A145A8185A985B000543F0 /* NSObject+BKInject.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		86A145BE185A9BDB000543F0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,6 +290,11 @@
 			isa = PBXTargetDependency;
 			target = 86A1457A185A9631000543F0 /* BKInject */;
 			targetProxy = 86A14591185A9631000543F0 /* PBXContainerItemProxy */;
+		};
+		86A145CE185A9BDB000543F0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 86A1457A185A9631000543F0 /* BKInject */;
+			targetProxy = 86A145CD185A9BDB000543F0 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -333,7 +385,6 @@
 			buildSettings = {
 				DSTROOT = /tmp/BKInject.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "BKInject/BKInject-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -345,7 +396,6 @@
 			buildSettings = {
 				DSTROOT = /tmp/BKInject.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "BKInject/BKInject-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -362,7 +412,6 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "BKInject/BKInject-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -383,9 +432,49 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "BKInject/BKInject-Prefix.pch";
 				INFOPLIST_FILE = "BKInjectTests/BKInjectTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+		86A145D0185A9BDB000543F0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BKInjectTestsMac/BKInjectTestsMac-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "BKInjectTestsMac/BKInjectTestsMac-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		86A145D1185A9BDB000543F0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BKInjectTestsMac/BKInjectTestsMac-Prefix.pch";
+				INFOPLIST_FILE = "BKInjectTestsMac/BKInjectTestsMac-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
@@ -415,6 +504,14 @@
 			buildConfigurations = (
 				86A145A2185A9631000543F0 /* Debug */,
 				86A145A3185A9631000543F0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		86A145CF185A9BDB000543F0 /* Build configuration list for PBXNativeTarget "BKInjectTestsMac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				86A145D0185A9BDB000543F0 /* Debug */,
+				86A145D1185A9BDB000543F0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
