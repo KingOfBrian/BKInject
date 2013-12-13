@@ -1,0 +1,424 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		86A1457F185A9631000543F0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86A1457E185A9631000543F0 /* Foundation.framework */; };
+		86A14584185A9631000543F0 /* BKInject.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 86A14583185A9631000543F0 /* BKInject.h */; };
+		86A14586185A9631000543F0 /* BKInject.m in Sources */ = {isa = PBXBuildFile; fileRef = 86A14585185A9631000543F0 /* BKInject.m */; };
+		86A1458D185A9631000543F0 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86A1458C185A9631000543F0 /* XCTest.framework */; };
+		86A1458E185A9631000543F0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86A1457E185A9631000543F0 /* Foundation.framework */; };
+		86A14590185A9631000543F0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86A1458F185A9631000543F0 /* UIKit.framework */; };
+		86A14593185A9631000543F0 /* libBKInject.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86A1457B185A9631000543F0 /* libBKInject.a */; };
+		86A14599185A9631000543F0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 86A14597185A9631000543F0 /* InfoPlist.strings */; };
+		86A1459B185A9631000543F0 /* BKInjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 86A1459A185A9631000543F0 /* BKInjectTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		86A14591185A9631000543F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 86A14573185A9631000543F0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 86A1457A185A9631000543F0;
+			remoteInfo = BKInject;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		86A14579185A9631000543F0 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				86A14584185A9631000543F0 /* BKInject.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		86A1457B185A9631000543F0 /* libBKInject.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBKInject.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		86A1457E185A9631000543F0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		86A14582185A9631000543F0 /* BKInject-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BKInject-Prefix.pch"; sourceTree = "<group>"; };
+		86A14583185A9631000543F0 /* BKInject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BKInject.h; sourceTree = "<group>"; };
+		86A14585185A9631000543F0 /* BKInject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BKInject.m; sourceTree = "<group>"; };
+		86A1458B185A9631000543F0 /* BKInjectTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BKInjectTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		86A1458C185A9631000543F0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		86A1458F185A9631000543F0 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		86A14596185A9631000543F0 /* BKInjectTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BKInjectTests-Info.plist"; sourceTree = "<group>"; };
+		86A14598185A9631000543F0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		86A1459A185A9631000543F0 /* BKInjectTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BKInjectTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		86A14578185A9631000543F0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				86A1457F185A9631000543F0 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		86A14588185A9631000543F0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				86A1458D185A9631000543F0 /* XCTest.framework in Frameworks */,
+				86A14593185A9631000543F0 /* libBKInject.a in Frameworks */,
+				86A14590185A9631000543F0 /* UIKit.framework in Frameworks */,
+				86A1458E185A9631000543F0 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		86A14572185A9631000543F0 = {
+			isa = PBXGroup;
+			children = (
+				86A14580185A9631000543F0 /* BKInject */,
+				86A14594185A9631000543F0 /* BKInjectTests */,
+				86A1457D185A9631000543F0 /* Frameworks */,
+				86A1457C185A9631000543F0 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		86A1457C185A9631000543F0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				86A1457B185A9631000543F0 /* libBKInject.a */,
+				86A1458B185A9631000543F0 /* BKInjectTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		86A1457D185A9631000543F0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				86A1457E185A9631000543F0 /* Foundation.framework */,
+				86A1458C185A9631000543F0 /* XCTest.framework */,
+				86A1458F185A9631000543F0 /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		86A14580185A9631000543F0 /* BKInject */ = {
+			isa = PBXGroup;
+			children = (
+				86A14583185A9631000543F0 /* BKInject.h */,
+				86A14585185A9631000543F0 /* BKInject.m */,
+				86A14581185A9631000543F0 /* Supporting Files */,
+			);
+			path = BKInject;
+			sourceTree = "<group>";
+		};
+		86A14581185A9631000543F0 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				86A14582185A9631000543F0 /* BKInject-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		86A14594185A9631000543F0 /* BKInjectTests */ = {
+			isa = PBXGroup;
+			children = (
+				86A1459A185A9631000543F0 /* BKInjectTests.m */,
+				86A14595185A9631000543F0 /* Supporting Files */,
+			);
+			path = BKInjectTests;
+			sourceTree = "<group>";
+		};
+		86A14595185A9631000543F0 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				86A14596185A9631000543F0 /* BKInjectTests-Info.plist */,
+				86A14597185A9631000543F0 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		86A1457A185A9631000543F0 /* BKInject */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 86A1459E185A9631000543F0 /* Build configuration list for PBXNativeTarget "BKInject" */;
+			buildPhases = (
+				86A14577185A9631000543F0 /* Sources */,
+				86A14578185A9631000543F0 /* Frameworks */,
+				86A14579185A9631000543F0 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BKInject;
+			productName = BKInject;
+			productReference = 86A1457B185A9631000543F0 /* libBKInject.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		86A1458A185A9631000543F0 /* BKInjectTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 86A145A1185A9631000543F0 /* Build configuration list for PBXNativeTarget "BKInjectTests" */;
+			buildPhases = (
+				86A14587185A9631000543F0 /* Sources */,
+				86A14588185A9631000543F0 /* Frameworks */,
+				86A14589185A9631000543F0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				86A14592185A9631000543F0 /* PBXTargetDependency */,
+			);
+			name = BKInjectTests;
+			productName = BKInjectTests;
+			productReference = 86A1458B185A9631000543F0 /* BKInjectTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		86A14573185A9631000543F0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = "Brian King";
+			};
+			buildConfigurationList = 86A14576185A9631000543F0 /* Build configuration list for PBXProject "BKInject" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 86A14572185A9631000543F0;
+			productRefGroup = 86A1457C185A9631000543F0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				86A1457A185A9631000543F0 /* BKInject */,
+				86A1458A185A9631000543F0 /* BKInjectTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		86A14589185A9631000543F0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				86A14599185A9631000543F0 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		86A14577185A9631000543F0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				86A14586185A9631000543F0 /* BKInject.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		86A14587185A9631000543F0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				86A1459B185A9631000543F0 /* BKInjectTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		86A14592185A9631000543F0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 86A1457A185A9631000543F0 /* BKInject */;
+			targetProxy = 86A14591185A9631000543F0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		86A14597185A9631000543F0 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				86A14598185A9631000543F0 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		86A1459C185A9631000543F0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		86A1459D185A9631000543F0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		86A1459F185A9631000543F0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/BKInject.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BKInject/BKInject-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		86A145A0185A9631000543F0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/BKInject.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BKInject/BKInject-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		86A145A2185A9631000543F0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BKInject/BKInject-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "BKInjectTests/BKInjectTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		86A145A3185A9631000543F0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BKInject/BKInject-Prefix.pch";
+				INFOPLIST_FILE = "BKInjectTests/BKInjectTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		86A14576185A9631000543F0 /* Build configuration list for PBXProject "BKInject" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				86A1459C185A9631000543F0 /* Debug */,
+				86A1459D185A9631000543F0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		86A1459E185A9631000543F0 /* Build configuration list for PBXNativeTarget "BKInject" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				86A1459F185A9631000543F0 /* Debug */,
+				86A145A0185A9631000543F0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		86A145A1185A9631000543F0 /* Build configuration list for PBXNativeTarget "BKInjectTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				86A145A2185A9631000543F0 /* Debug */,
+				86A145A3185A9631000543F0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 86A14573185A9631000543F0 /* Project object */;
+}
