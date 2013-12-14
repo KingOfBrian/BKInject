@@ -32,9 +32,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "86A145AC185A9960000543F0"
-               BuildableName = "BKInjectTestsMac.xctest"
-               BlueprintName = "BKInjectTestsMac"
+               BlueprintIdentifier = "86A1458A185A9631000543F0"
+               BuildableName = "BKInjectTests.xctest"
+               BlueprintName = "BKInjectTests"
                ReferencedContainer = "container:BKInject.xcodeproj">
             </BuildableReference>
          </TestableReference>

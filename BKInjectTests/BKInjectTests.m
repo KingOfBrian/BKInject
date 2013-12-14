@@ -14,6 +14,7 @@
 - (void)populateValueWithFoo;
 - (void)thisMethod:(NSString *)arg1 hasTwoArgs:(NSString *)args2;
 - (void)primitiveMethod:(NSUInteger)i;
+- (NSUInteger)primativeReturnMethod;
 @end
 
 @implementation Foo
@@ -33,6 +34,10 @@
     self.value = [NSString stringWithFormat:@"P%zd", i];
 }
 
+- (NSUInteger)primativeReturnMethod
+{
+    return 88;
+}
 - (void)who:(id)a would:(id)b ever:(id)c write:(id)d methods:(id)e like:(id)f this:(id)g
 {
     // ha
@@ -46,18 +51,6 @@
 @end
 
 @implementation BKInjectTests
-
-- (void)setUp
-{
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-}
-
-- (void)tearDown
-{
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
 
 - (void)testInjectNoArg
 {
@@ -74,6 +67,11 @@
     [f populateValueWithFoo];
     XCTAssertTrue(preValue == nil, @"");
     XCTAssertTrue([postValue isEqualToString:@"FOO"], @"");
+    
+    [Foo bk_injectResetMethod:@selector(populateValueWithFoo)];
+    postValue = nil;
+    [f populateValueWithFoo];
+    XCTAssertTrue(postValue == nil, @"");
 }
 
 - (void)testInjectOneArg
@@ -95,6 +93,8 @@
     f.value = @"FOO";
     XCTAssertTrue([preValue isEqualToString:@"FOO"], @"");
     XCTAssertTrue([postValue isEqualToString:@"FOO"], @"");
+    
+    [Foo bk_injectResetMethod:@selector(setValue:)];
 }
 
 - (void)testInjectTwoArg
@@ -122,6 +122,8 @@
     [f thisMethod:@"FOO" hasTwoArgs:@"BAR"];
     XCTAssertTrue([preValue isEqualToString:@"FOOBAR"], @"");
     XCTAssertTrue([postValue isEqualToString:@"FOOBAR"], @"");
+    
+    [Foo bk_injectResetMethod:@selector(thisMethod:hasTwoArgs:)];
 }
 
 - (void)testInjectPrimitive
@@ -155,6 +157,95 @@
     XCTAssertTrue([f.value isEqualToString:@"P7"], @"");
     XCTAssertTrue(preValue == nil, @"");
     XCTAssertTrue([postValue isEqualToString:@"P7"], @"");
+    
+    [Foo bk_injectResetMethod:@selector(primitiveMethod:)];
+}
+
+- (void)testReturnObject
+{
+    __block BOOL preEnter = NO;
+    __block BOOL postEnter = NO;
+    
+    [Foo bk_injectMethod:@selector(value) before:^(Foo *instance, ...) {
+        NSLog(@"Pre Enter");
+        preEnter = YES;
+    } after:^(Foo *instance, ...) {
+        NSLog(@"Post Enter");
+        postEnter = YES;
+    }];
+    
+    Foo *f = [[Foo alloc] init];
+    f.value = @"FOO";
+    XCTAssertTrue(preEnter == NO, @"");
+    XCTAssertTrue(postEnter == NO, @"");
+    XCTAssertTrue([f.value isEqualToString:@"FOO"], @"");
+    XCTAssertTrue(preEnter, @"");
+    XCTAssertTrue(postEnter, @"");
+    [Foo bk_injectResetMethod:@selector(value)];
+}
+
+- (void)testReturnPrimative
+{
+    __block BOOL preEnter = NO;
+    __block BOOL postEnter = NO;
+    
+    [Foo bk_injectMethod:@selector(primativeReturnMethod) before:^(Foo *instance, ...) {
+        preEnter = YES;
+    } after:^(Foo *instance, ...) {
+        postEnter = YES;
+    }];
+    
+    Foo *f = [[Foo alloc] init];
+    XCTAssertTrue(preEnter == NO, @"");
+    XCTAssertTrue(postEnter == NO, @"");
+    XCTAssertTrue([f primativeReturnMethod] == 88, @"");
+    XCTAssertTrue(preEnter, @"");
+    XCTAssertTrue(postEnter, @"");
+    
+    [Foo bk_injectResetMethod:@selector(primativeReturnMethod)];
+}
+
+- (void)testReInjection
+{
+    __block BOOL preEnter = NO;
+    __block BOOL postEnter = NO;
+    
+    [Foo bk_injectMethod:@selector(primativeReturnMethod) before:^(Foo *instance, ...) {
+        preEnter = YES;
+    } after:^(Foo *instance, ...) {
+        postEnter = YES;
+    }];
+    
+    Foo *f = [[Foo alloc] init];
+    XCTAssertTrue(preEnter == NO, @"");
+    XCTAssertTrue(postEnter == NO, @"");
+    XCTAssertTrue([f primativeReturnMethod] == 88, @"");
+    XCTAssertTrue(preEnter, @"");
+    XCTAssertTrue(postEnter, @"");
+    
+    [Foo bk_injectResetMethod:@selector(primativeReturnMethod)];
+    
+    preEnter = NO;
+    postEnter = NO;
+
+    __block BOOL preEnter2 = NO;
+    __block BOOL postEnter2 = NO;
+
+    [Foo bk_injectMethod:@selector(primativeReturnMethod) before:^(Foo *instance, ...) {
+        preEnter2 = YES;
+    } after:^(Foo *instance, ...) {
+        postEnter2 = YES;
+    }];
+    
+    XCTAssertTrue(preEnter2 == NO, @"");
+    XCTAssertTrue(postEnter2 == NO, @"");
+    XCTAssertTrue([f primativeReturnMethod] == 88, @"");
+    XCTAssertTrue(preEnter == NO, @"");
+    XCTAssertTrue(postEnter == NO, @"");
+
+    XCTAssertTrue(preEnter2, @"");
+    XCTAssertTrue(postEnter2, @"");
+    [Foo bk_injectResetMethod:@selector(primativeReturnMethod)];
 }
 
 - (void)testNilBullocks
@@ -162,6 +253,8 @@
     [Foo bk_injectMethod:@selector(primitiveMethod:) before:nil after:nil];
     Foo *f = [[Foo alloc] init];
     XCTAssertNoThrow([f primitiveMethod:7], @"");
+    [Foo bk_injectResetMethod:@selector(primitiveMethod:)];
+
 }
 
 - (void)testBadIdea
@@ -169,6 +262,8 @@
     [Foo bk_injectMethod:@selector(who:would:ever:write:methods:like:this:) before:^(Foo *instance, ...) {} after:^(Foo *instance, ...) {}];
     Foo *f = [[Foo alloc] init];
     XCTAssertThrows([f who:nil would:nil ever:nil write:nil methods:nil like:nil this:nil], @"");
+    [Foo bk_injectResetMethod:@selector(who:would:ever:write:methods:like:this:)];
+
 }
 
 @end

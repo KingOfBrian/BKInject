@@ -12,5 +12,6 @@ typedef void (^BKInjectBlock)(id self, ...);
 @interface NSObject (BKInject)
 
 + (BOOL)bk_injectMethod:(SEL)selector before:(BKInjectBlock)before after:(BKInjectBlock)after;
++ (BOOL)bk_injectResetMethod:(SEL)selector;
 
 @end
