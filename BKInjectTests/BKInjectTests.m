@@ -8,6 +8,7 @@
 
 #import <XCTest/XCTest.h>
 #import "NSObject+BKInject.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface Foo : NSObject
 @property (copy) NSString *value;
@@ -34,11 +35,20 @@
     self.value = [NSString stringWithFormat:@"P%zd", i];
 }
 
+- (void)largePrimitiveValue:(CGRect)rect
+{
+    self.value = [NSString stringWithFormat:@"R%f.%f / %fx%f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
+}
+
 - (NSUInteger)primativeReturnMethod
 {
     return 88;
 }
 - (void)who:(id)a would:(id)b ever:(id)c write:(id)d methods:(id)e like:(id)f this:(id)g
+{
+    // ha
+}
+- (void)logTestWithInt:(NSUInteger)a rect:(CGRect)b string:(NSString *)c selector:(SEL)d point:(CGPoint)e bool:(BOOL)f
 {
     // ha
 }
@@ -57,9 +67,11 @@
     __block NSString *preValue = nil;
     __block NSString *postValue = nil;
     
-    [Foo bk_injectMethod:@selector(populateValueWithFoo) before:^(Foo *instance, ...) {
+    [Foo bk_injectMethod:@selector(populateValueWithFoo) before:^(NSInvocation *invocation) {
+        Foo *instance = invocation.target;
         preValue = instance.value;
-    } after:^(Foo *instance, ...) {
+    } after:^(NSInvocation *invocation) {
+        Foo *instance = invocation.target;
         postValue = instance.value;
     }];
     
@@ -79,13 +91,10 @@
     __block NSString *preValue = nil;
     __block NSString *postValue = nil;
     
-    [Foo bk_injectMethod:@selector(setValue:) before:^(Foo *instance, ...) {
-        va_list args;
-        va_start(args, instance);
-        
-        preValue = (__bridge NSString *)va_arg(args, void*);
-        va_end(args);
-    } after:^(Foo *instance, ...) {
+    [Foo bk_injectMethod:@selector(setValue:) before:^(NSInvocation *invocation) {
+        [invocation getArgument:&preValue atIndex:2];
+    } after:^(NSInvocation *invocation) {
+        Foo *instance = invocation.target;
         postValue = instance.value;
     }];
     
@@ -99,23 +108,21 @@
 
 - (void)testInjectTwoArg
 {
+    __block NSString *tmpValue = nil;
     __block NSString *preValue = nil;
     __block NSString *postValue = nil;
     
-    [Foo bk_injectMethod:@selector(thisMethod:hasTwoArgs:) before:^(Foo *instance, ...) {
-        va_list args;
-        va_start(args, instance);
+    [Foo bk_injectMethod:@selector(thisMethod:hasTwoArgs:) before:^(NSInvocation *invocation) {
+        [invocation getArgument:&preValue atIndex:2];
+        [invocation getArgument:&tmpValue atIndex:3];
         
-        preValue = (__bridge NSString *)va_arg(args, void*);
-        preValue = [preValue stringByAppendingString:(__bridge NSString *)va_arg(args, void*)];
-        va_end(args);
-    } after:^(Foo *instance, ...) {
-        va_list args;
-        va_start(args, instance);
+        preValue = [preValue stringByAppendingString:tmpValue];
+
+    } after:^(NSInvocation *invocation) {
+        [invocation getArgument:&postValue atIndex:2];
+        [invocation getArgument:&tmpValue atIndex:3];
         
-        postValue = (__bridge NSString *)va_arg(args, void*);
-        postValue = [postValue stringByAppendingString:(__bridge NSString *)va_arg(args, void*)];
-        va_end(args);
+        postValue = [postValue stringByAppendingString:tmpValue];
     }];
     
     Foo *f = [[Foo alloc] init];
@@ -133,21 +140,15 @@
     __block NSString *preValue = nil;
     __block NSString *postValue = nil;
     
-    [Foo bk_injectMethod:@selector(primitiveMethod:) before:^(Foo *instance, ...) {
-        va_list args;
-        va_start(args, instance);
-        
-        preInteger = va_arg(args, NSUInteger);
-        va_end(args);
+    [Foo bk_injectMethod:@selector(primitiveMethod:) before:^(NSInvocation *invocation) {
+        Foo *instance = invocation.target;
+        [invocation getArgument:&preInteger atIndex:2];
         
         preValue = instance.value;
-    } after:^(Foo *instance, ...) {
-        va_list args;
-        va_start(args, instance);
-        
-        postInteger = va_arg(args, NSUInteger);
-        va_end(args);
-        
+    } after:^(NSInvocation *invocation) {
+        Foo *instance = invocation.target;
+        [invocation getArgument:&postInteger atIndex:2];
+       
         postValue = instance.value;
     }];
     
@@ -161,15 +162,37 @@
     [Foo bk_injectResetMethod:@selector(primitiveMethod:)];
 }
 
+- (void)testInjectLargePrimitive
+{
+    __block CGRect preRect = CGRectZero;
+    __block CGRect postRect = CGRectZero;
+    
+    [Foo bk_injectMethod:@selector(largePrimitiveValue:) before:^(NSInvocation *invocation) {
+        [invocation getArgument:&preRect atIndex:2];
+    } after:^(NSInvocation *invocation) {
+        [invocation getArgument:&postRect atIndex:2];
+    }];
+    
+    Foo *f = [[Foo alloc] init];
+    [f largePrimitiveValue:CGRectMake(1, 2, 3, 4)];
+    XCTAssertTrue(preRect.origin.x == 1 &&
+                  preRect.origin.y == 2 &&
+                  preRect.size.width == 3 &&
+                  preRect.size.height == 4, @"");
+
+    [Foo bk_injectResetMethod:@selector(largePrimitiveValue:)];
+
+}
+
 - (void)testReturnObject
 {
     __block BOOL preEnter = NO;
     __block BOOL postEnter = NO;
     
-    [Foo bk_injectMethod:@selector(value) before:^(Foo *instance, ...) {
+    [Foo bk_injectMethod:@selector(value) before:^(NSInvocation *invocation) {
         NSLog(@"Pre Enter");
         preEnter = YES;
-    } after:^(Foo *instance, ...) {
+    } after:^(NSInvocation *invocation) {
         NSLog(@"Post Enter");
         postEnter = YES;
     }];
@@ -189,9 +212,9 @@
     __block BOOL preEnter = NO;
     __block BOOL postEnter = NO;
     
-    [Foo bk_injectMethod:@selector(primativeReturnMethod) before:^(Foo *instance, ...) {
+    [Foo bk_injectMethod:@selector(primativeReturnMethod) before:^(NSInvocation *invocation) {
         preEnter = YES;
-    } after:^(Foo *instance, ...) {
+    } after:^(NSInvocation *invocation) {
         postEnter = YES;
     }];
     
@@ -210,9 +233,9 @@
     __block BOOL preEnter = NO;
     __block BOOL postEnter = NO;
     
-    [Foo bk_injectMethod:@selector(primativeReturnMethod) before:^(Foo *instance, ...) {
+    [Foo bk_injectMethod:@selector(primativeReturnMethod) before:^(NSInvocation *invocation) {
         preEnter = YES;
-    } after:^(Foo *instance, ...) {
+    } after:^(NSInvocation *invocation) {
         postEnter = YES;
     }];
     
@@ -231,9 +254,9 @@
     __block BOOL preEnter2 = NO;
     __block BOOL postEnter2 = NO;
 
-    [Foo bk_injectMethod:@selector(primativeReturnMethod) before:^(Foo *instance, ...) {
+    [Foo bk_injectMethod:@selector(primativeReturnMethod) before:^(NSInvocation *invocation) {
         preEnter2 = YES;
-    } after:^(Foo *instance, ...) {
+    } after:^(NSInvocation *invocation) {
         postEnter2 = YES;
     }];
     
@@ -257,13 +280,16 @@
 
 }
 
-- (void)testBadIdea
-{
-    [Foo bk_injectMethod:@selector(who:would:ever:write:methods:like:this:) before:^(Foo *instance, ...) {} after:^(Foo *instance, ...) {}];
-    Foo *f = [[Foo alloc] init];
-    XCTAssertThrows([f who:nil would:nil ever:nil write:nil methods:nil like:nil this:nil], @"");
-    [Foo bk_injectResetMethod:@selector(who:would:ever:write:methods:like:this:)];
 
+- (void)testLog
+{
+    [Foo bk_injectMethod:@selector(logTestWithInt:rect:string:selector:point:bool:) before:^(NSInvocation *invocation) {
+    } after:^(NSInvocation *invocation) {
+        
+    }];
+    //[Foo bk_injectLogMethod:@selector(logTestWithInt:rect:string:selector:point:bool:)];
+    Foo *f = [[Foo alloc] init];
+    [f logTestWithInt:7 rect:CGRectMake(1,2,3,4) string:@"hey" selector:@selector(testNilBullocks) point:CGPointMake(10, 20) bool:YES];
 }
 
 @end

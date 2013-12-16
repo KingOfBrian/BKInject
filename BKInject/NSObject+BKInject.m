@@ -14,48 +14,21 @@
   #import <objc/objc-class.h>
 #endif
 
-typedef void* (^BKInjectReturnBlock)(id self, ...);
+#import <QuartzCore/QuartzCore.h>
 
+typedef void* (^BKInjectReturnBlock)(id self, ...);
+typedef void  (^BKInjectNoReturnBlock)(id self, ...);
+
+static const char *bk_formatForObjCType(const char *type);
+
+#define assignArgumentIf(type, vaType, argType, argumentList, i) \
+else if (!strcmp(argType, @encode(type))) {\
+type arg = va_arg(argumentList, vaType);\
+[invocation setArgument:&arg atIndex:i];\
+}
 
 
 @implementation NSObject (BKInject)
-
-+ (void)bk_invokeBlock:(BKInjectBlock)block target:(id)target arguments:(va_list)args count:(NSUInteger)count
-{
-    // Not a fan.
-    switch (count) {
-        case 0:block(target);break;
-        case 1:block(target, va_arg(args, void*));break;
-        case 2:block(target, va_arg(args, void*), va_arg(args, void*));break;
-        case 3:block(target, va_arg(args, void*), va_arg(args, void*), va_arg(args, void*));break;
-        case 4:block(target, va_arg(args, void*), va_arg(args, void*), va_arg(args, void*), va_arg(args, void*));break;
-        case 5:block(target, va_arg(args, void*), va_arg(args, void*), va_arg(args, void*), va_arg(args, void*), va_arg(args, void*));break;
-        case 6:block(target, va_arg(args, void*), va_arg(args, void*), va_arg(args, void*), va_arg(args, void*), va_arg(args, void*), va_arg(args, void*));break;
-        default:
-            [NSException raise:NSInvalidArgumentException format:@"More than 6 arguments?  Really?!  Fix this!"];
-            break;
-    }
-}
-
-+ (BOOL)bk_injectResetMethod:(SEL)selector
-{
-    Method origMethod = class_getInstanceMethod(self, selector);
-    if (!origMethod)
-    {
-        return NO;
-    }
-    
-    SEL injectSelector = NSSelectorFromString([@"bk_injectMethod_before_after__" stringByAppendingString:NSStringFromSelector(selector)]);
-    Method injectMethod = class_getInstanceMethod(self, injectSelector);
-    if (!injectMethod)
-    {
-        return NO;
-    }
-
-    method_exchangeImplementations(injectMethod, origMethod);
-
-    return YES;
-}
 
 + (BOOL)bk_injectMethod:(SEL)selector before:(BKInjectBlock)before after:(BKInjectBlock)after
 {
@@ -90,37 +63,21 @@ typedef void* (^BKInjectReturnBlock)(id self, ...);
     {
         // These block definitions should be cleaned up.   Waiting to know that there's not a substantially better way of doing this
         // before cleanup.  Largely, I'm failing at handling va_list cleanly.
-        BKInjectBlock voidBlock = ^(NSObject *target, ...)
+        BKInjectNoReturnBlock voidBlock = ^(NSObject *target, ...)
         {
             va_list args;
             va_start(args, target);
-            
-            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+            NSInvocation *invocation = [self bk_invocationWithSignature:signature andArgs:args];
+            va_end(args);
             [invocation setTarget:target];
             [invocation setSelector:injectSelector];
             
-            for (NSUInteger i = 2; i < [signature numberOfArguments]; i++)
-            {
-                void* argument = va_arg(args, void*);
-                [invocation setArgument:&argument atIndex:i];
-            }
-            va_end(args);
             
-            if (before)
-            {
-                va_start(args, target);
-                [self bk_invokeBlock:before target:target arguments:args count:[signature numberOfArguments] - 2];
-                va_end(args);
-            }
+            if (before) { before(invocation); }
             
             [invocation invoke];
             
-            if (after)
-            {
-                va_start(args, target);
-                [self bk_invokeBlock:after target:target arguments:args count:[signature numberOfArguments] - 2];
-                va_end(args);
-            }
+            if (after)  { after(invocation);  }
         };
         internalBlock = voidBlock;
     }
@@ -133,33 +90,18 @@ typedef void* (^BKInjectReturnBlock)(id self, ...);
         {
             va_list args;
             va_start(args, target);
-            
-            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+            NSInvocation *invocation = [self bk_invocationWithSignature:signature andArgs:args];
+            va_end(args);
             [invocation setTarget:target];
             [invocation setSelector:injectSelector];
             
-            for (NSUInteger i = 2; i < [signature numberOfArguments]; i++)
-            {
-                void* argument = va_arg(args, void*);
-                [invocation setArgument:&argument atIndex:i];
-            }
-            va_end(args);
             
-            if (before)
-            {
-                va_start(args, target);
-                [self bk_invokeBlock:before target:target arguments:args count:[signature numberOfArguments] - 2];
-                va_end(args);
-            }
+            if (before) { before(invocation); }
             
             [invocation invoke];
             
-            if (after)
-            {
-                va_start(args, target);
-                [self bk_invokeBlock:after target:target arguments:args count:[signature numberOfArguments] - 2];
-                va_end(args);
-            }
+            if (after)  { after(invocation);  }
+
             void *returnValue = nil;
             [invocation getReturnValue:&returnValue];
             return returnValue;
@@ -191,4 +133,127 @@ typedef void* (^BKInjectReturnBlock)(id self, ...);
     return YES;
 }
 
++ (NSInvocation *)bk_invocationWithSignature:(NSMethodSignature *)signature andArgs:(va_list)args
+{
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+    
+    for (NSUInteger i = 2; i < [signature numberOfArguments]; i++)
+    {
+        const char *argType = [signature getArgumentTypeAtIndex:i];
+        if (NO) {} // Simplify the macro, make them all else if...
+        assignArgumentIf(id, id, argType, args, i)
+        assignArgumentIf(SEL, SEL, argType, args, i)
+        assignArgumentIf(Class, Class, argType, args, i)
+        assignArgumentIf(char, int, argType, args, i)
+        assignArgumentIf(unsigned char, int, argType, args, i)
+        assignArgumentIf(int, int, argType, args, i)
+        assignArgumentIf(bool, int, argType, args, i)
+        assignArgumentIf(BOOL, int, argType, args, i)
+        assignArgumentIf(short, int, argType, args, i)
+        assignArgumentIf(unichar, int, argType, args, i)
+        assignArgumentIf(float, double, argType, args, i)
+        assignArgumentIf(double, double, argType, args, i)
+        assignArgumentIf(long, long, argType, args, i)
+        assignArgumentIf(long long, long long, argType, args, i)
+        assignArgumentIf(unsigned int, unsigned int, argType, args, i)
+        assignArgumentIf(unsigned long, unsigned long, argType, args, i)
+        assignArgumentIf(unsigned long long, unsigned long long, argType, args, i)
+        assignArgumentIf(char*, char*, argType, args, i)
+        assignArgumentIf(void*, void*, argType, args, i)
+        assignArgumentIf(CGPoint, CGPoint, argType, args, i)
+        assignArgumentIf(CGRect, CGRect, argType, args, i)
+        else
+        {
+            NSAssert1(NO, @"-- Unhandled type: %s", argType);
+        }
+
+    }
+    return invocation;
+}
+
+//+ (NSString *)bk_formatForSignatureArguments:(NSMethodSignature *)signature andSelector:(SEL)selector
+//{
+//    NSArray *selectorParts = [NSStringFromSelector(selector) componentsSeparatedByString:@":"];
+//    NSMutableString *str = [@"" mutableCopy];
+//    for (NSUInteger i = 2; i < [signature numberOfArguments]; i++)
+//    {
+//        const char *argumentType = [signature getArgumentTypeAtIndex:i];
+//
+//        [str appendString:selectorParts[i-2]];
+//        [str appendString:@":"];
+//        [str appendFormat:@"%s", bk_formatForObjCType(argumentType)];
+//        
+//    }
+//    return str;
+//}
+
++ (BOOL)bk_injectLogMethod:(SEL)selector
+{
+//    NSMethodSignature *signature = [self.class instanceMethodSignatureForSelector:selector];
+    
+    return [self bk_injectMethod:selector before:^(NSInvocation *invocation) {
+//        va_list args;
+//        va_start(args, self);
+//        NSArray *selectorParts = [NSStringFromSelector(selector) componentsSeparatedByString:@":"];
+//
+//        NSMutableString *string = [@"" mutableCopy];
+//
+//        for (NSUInteger i = 2; i < [signature numberOfArguments]; i++)
+//        {
+//            NSString *selPart = selectorParts[i-2];
+//            void* argument = va_arg(args, void*);
+//            NSValue *value = [NSValue value:&argument withObjCType:[signature getArgumentTypeAtIndex:i]];
+//            [string appendFormat:@"%@:%@", selPart,value];
+//        }
+//        NSLog(@"%@", string);
+    } after:nil];
+}
+
++ (BOOL)bk_injectResetMethod:(SEL)selector
+{
+    Method origMethod = class_getInstanceMethod(self, selector);
+    if (!origMethod)
+    {
+        return NO;
+    }
+    
+    SEL injectSelector = NSSelectorFromString([@"bk_injectMethod_before_after__" stringByAppendingString:NSStringFromSelector(selector)]);
+    Method injectMethod = class_getInstanceMethod(self, injectSelector);
+    if (!injectMethod)
+    {
+        return NO;
+    }
+    
+    method_exchangeImplementations(injectMethod, origMethod);
+    
+    return YES;
+}
+
 @end
+
+static const char *bk_formatForObjCType(const char *type)
+{
+    if(strcmp(type, @encode(id)) == 0)
+        return "%@";
+    else if(strcmp(type, @encode(BOOL)) == 0)
+        return "%d";
+    else if(strcmp(type, @encode(int)) == 0)
+        return "%d";
+    else if(strcmp(type, @encode(unsigned int)) == 0)
+        return "%u";
+    else if(strcmp(type, @encode(long)) == 0)
+        return "%li";
+    else if(strcmp(type, @encode(unsigned long)) == 0)
+        return "%lu";
+    else if(strcmp(type, @encode(long long)) == 0)
+        return "%lli";
+    else if(strcmp(type, @encode(unsigned long long)) == 0)
+        return "%llu";
+    else if(strcmp(type, @encode(float)) == 0)
+        return "%f";
+    else if(strcmp(type, @encode(double)) == 0)
+        return "%f";
+    else
+        return "%d";
+}
+

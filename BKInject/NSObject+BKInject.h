@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-typedef void (^BKInjectBlock)(id self, ...);
+typedef void (^BKInjectBlock)(NSInvocation *invocation);
 
 @interface NSObject (BKInject)
 
@@ -24,6 +24,6 @@ typedef void (^BKInjectBlock)(id self, ...);
 + (BOOL)bk_injectResetMethod:(SEL)selector;
 
 
-
++ (BOOL)bk_injectLogMethod:(SEL)selector;
 
 @end
