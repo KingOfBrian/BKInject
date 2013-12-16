@@ -19,6 +19,9 @@ typedef void  (^BKInjectNoReturnBlock)(id self, ...);
 
 #define MIN_ARG_SIZE 4
 
+
+
+
 @implementation NSObject (BKInject)
 
 + (BOOL)bk_injectMethod:(SEL)selector before:(BKInjectBlock)before after:(BKInjectBlock)after
@@ -58,19 +61,8 @@ typedef void  (^BKInjectNoReturnBlock)(id self, ...);
         {
             va_list args;
             va_start(args, target);
-            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-            
-            for (NSUInteger i = 2; i < [signature numberOfArguments]; i++)
-            {
-                NSUInteger argSize;
-                NSGetSizeAndAlignment([signature getArgumentTypeAtIndex:i], &argSize, NULL);
-                [invocation setArgument:args atIndex:i];
-                
-                args += argSize >= MIN_ARG_SIZE ? argSize : MIN_ARG_SIZE;
-            }
+            NSInvocation *invocation = [self bk_invocationWithSignature:signature target:target selector:injectSelector andArgs:args];
             va_end(args);
-            [invocation setTarget:target];
-            [invocation setSelector:injectSelector];
             
             if (before) { before(invocation); }
             
@@ -89,20 +81,9 @@ typedef void  (^BKInjectNoReturnBlock)(id self, ...);
         {
             va_list args;
             va_start(args, target);
-            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-            
-            for (NSUInteger i = 2; i < [signature numberOfArguments]; i++)
-            {
-                NSUInteger argSize;
-                NSGetSizeAndAlignment([signature getArgumentTypeAtIndex:i], &argSize, NULL);
-                [invocation setArgument:args atIndex:i];
-                
-                args += argSize >= MIN_ARG_SIZE ? argSize : MIN_ARG_SIZE;
-            }
+            NSInvocation *invocation = [self bk_invocationWithSignature:signature target:target selector:injectSelector andArgs:args];
             va_end(args);
-            [invocation setTarget:target];
-            [invocation setSelector:injectSelector];
-            
+
             if (before) { before(invocation); }
             
             [invocation invoke];
@@ -138,6 +119,33 @@ typedef void  (^BKInjectNoReturnBlock)(id self, ...);
     method_exchangeImplementations(class_getInstanceMethod(self, selector), class_getInstanceMethod(self, injectSelector));
 
     return YES;
+}
+
++ (NSInvocation *)bk_invocationWithSignature:(NSMethodSignature *)signature target:(id)target selector:(SEL)selector andArgs:(va_list)args
+{
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+    
+    for (NSUInteger i = 2; i < [signature numberOfArguments]; i++)
+    {
+        [invocation setArgument:args atIndex:i];
+        
+        const char *argType = [signature getArgumentTypeAtIndex:i];
+        NSUInteger argSize;
+        NSGetSizeAndAlignment(argType, &argSize, NULL);
+        
+        NSUInteger intSize = MAX(1,argSize/sizeof(int));
+        if (intSize == 1)
+            va_arg(args, int);
+        else if (intSize == 2)
+            va_arg(args, int[2]);
+        else if (intSize == 3)
+            va_arg(args, int[3]);
+        else if (intSize == 4)
+            va_arg(args, int[4]);
+    }
+    [invocation setTarget:target];
+    [invocation setSelector:selector];
+    return invocation;
 }
 
 

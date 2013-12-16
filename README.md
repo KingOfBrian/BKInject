@@ -16,6 +16,3 @@ The usage is pretty simple:
     } after:^(NSInvocation *invocation) {
     }];
     
-
-
-

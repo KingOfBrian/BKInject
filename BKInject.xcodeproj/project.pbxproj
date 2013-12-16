@@ -16,6 +16,7 @@
 		86A1459B185A9631000543F0 /* BKInjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 86A1459A185A9631000543F0 /* BKInjectTests.m */; };
 		86A145A8185A985B000543F0 /* NSObject+BKInject.m in Sources */ = {isa = PBXBuildFile; fileRef = 86A145A5185A9678000543F0 /* NSObject+BKInject.m */; };
 		86A145C3185A9BDB000543F0 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86A1458C185A9631000543F0 /* XCTest.framework */; };
+		86E39617185F9C88000B6A04 /* NSObject+BKInject.m in Sources */ = {isa = PBXBuildFile; fileRef = 86A145A5185A9678000543F0 /* NSObject+BKInject.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -266,6 +267,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86E39617185F9C88000B6A04 /* NSObject+BKInject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
