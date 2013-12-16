@@ -44,13 +44,8 @@
 {
     return 88;
 }
-- (void)who:(id)a would:(id)b ever:(id)c write:(id)d methods:(id)e like:(id)f this:(id)g
+- (void)testBool:(BOOL)a float:(float)b int:(NSUInteger)c rect:(CGRect)d string:(NSString *)e selector:(SEL)f point:(CGPoint)g char:(const char *)h
 {
-    // ha
-}
-- (void)logTestWithInt:(NSUInteger)a rect:(CGRect)b string:(NSString *)c selector:(SEL)d point:(CGPoint)e bool:(BOOL)f
-{
-    // ha
 }
 
 
@@ -190,10 +185,8 @@
     __block BOOL postEnter = NO;
     
     [Foo bk_injectMethod:@selector(value) before:^(NSInvocation *invocation) {
-        NSLog(@"Pre Enter");
         preEnter = YES;
     } after:^(NSInvocation *invocation) {
-        NSLog(@"Post Enter");
         postEnter = YES;
     }];
     
@@ -277,19 +270,46 @@
     Foo *f = [[Foo alloc] init];
     XCTAssertNoThrow([f primitiveMethod:7], @"");
     [Foo bk_injectResetMethod:@selector(primitiveMethod:)];
-
 }
 
-
-- (void)testLog
+- (void)testArgumentsOfVariousTypes
 {
-    [Foo bk_injectMethod:@selector(logTestWithInt:rect:string:selector:point:bool:) before:^(NSInvocation *invocation) {
+    __block BOOL a;
+    __block float b;
+    __block NSUInteger c;
+    __block CGRect d;
+    __block NSString *e;
+    __block SEL f;
+    __block CGPoint g;
+    __block const char *h;
+    
+    [Foo bk_injectMethod:@selector(testBool:float:int:rect:string:selector:point:char:) before:^(NSInvocation *invocation) {
+        [invocation getArgument:&a atIndex:2];
+        [invocation getArgument:&b atIndex:3];
+        [invocation getArgument:&c atIndex:4];
+        [invocation getArgument:&d atIndex:5];
+        [invocation getArgument:&e atIndex:6];
+        [invocation getArgument:&f atIndex:7];
+        [invocation getArgument:&g atIndex:8];
+        [invocation getArgument:&h atIndex:9];
     } after:^(NSInvocation *invocation) {
-        
     }];
-    //[Foo bk_injectLogMethod:@selector(logTestWithInt:rect:string:selector:point:bool:)];
-    Foo *f = [[Foo alloc] init];
-    [f logTestWithInt:7 rect:CGRectMake(1,2,3,4) string:@"hey" selector:@selector(testNilBullocks) point:CGPointMake(10, 20) bool:YES];
+    
+    Foo *foo = [[Foo alloc] init];
+    [foo testBool:NO float:3.14159 int:7 rect:CGRectMake(1,2,3,4) string:@"Hey" selector:@selector(testNilBullocks) point:CGPointMake(10, 20) char:"1234"];
+
+    XCTAssertTrue(a == NO && fabs(b - 3.14159) < 0.001 && c == 7, @"");
+    XCTAssertTrue(d.origin.x == 1 &&
+                  d.origin.y == 2 &&
+                  d.size.width == 3 &&
+                  d.size.height == 4, @"");
+    XCTAssertTrue([e isEqualToString:@"Hey"], @"");
+    XCTAssertTrue([NSStringFromSelector(f) isEqualToString:@"testNilBullocks"], @"");
+    XCTAssertTrue(g.x == 10 && g.y == 20, @"");
+    XCTAssertTrue(strcmp(h, "1234") == 0, @"");
+    
+    [Foo bk_injectResetMethod:@selector(testBool:float:int:rect:string:selector:point:char:)];
+
 }
 
 @end

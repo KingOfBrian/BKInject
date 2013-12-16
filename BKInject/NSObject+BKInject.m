@@ -14,17 +14,10 @@
   #import <objc/objc-class.h>
 #endif
 
-#import <QuartzCore/QuartzCore.h>
-
 typedef void* (^BKInjectReturnBlock)(id self, ...);
 typedef void  (^BKInjectNoReturnBlock)(id self, ...);
 
-#define assignArgumentIf(type, vaType, argType, argumentList, i) \
-else if (!strcmp(argType, @encode(type))) {\
-type arg = va_arg(argumentList, vaType);\
-[invocation setArgument:&arg atIndex:i];\
-}
-
+#define MIN_ARG_SIZE 4
 
 @implementation NSObject (BKInject)
 
@@ -65,11 +58,19 @@ type arg = va_arg(argumentList, vaType);\
         {
             va_list args;
             va_start(args, target);
-            NSInvocation *invocation = [self bk_invocationWithSignature:signature andArgs:args];
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+            
+            for (NSUInteger i = 2; i < [signature numberOfArguments]; i++)
+            {
+                NSUInteger argSize;
+                NSGetSizeAndAlignment([signature getArgumentTypeAtIndex:i], &argSize, NULL);
+                [invocation setArgument:args atIndex:i];
+                
+                args += argSize >= MIN_ARG_SIZE ? argSize : MIN_ARG_SIZE;
+            }
             va_end(args);
             [invocation setTarget:target];
             [invocation setSelector:injectSelector];
-            
             
             if (before) { before(invocation); }
             
@@ -88,11 +89,19 @@ type arg = va_arg(argumentList, vaType);\
         {
             va_list args;
             va_start(args, target);
-            NSInvocation *invocation = [self bk_invocationWithSignature:signature andArgs:args];
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+            
+            for (NSUInteger i = 2; i < [signature numberOfArguments]; i++)
+            {
+                NSUInteger argSize;
+                NSGetSizeAndAlignment([signature getArgumentTypeAtIndex:i], &argSize, NULL);
+                [invocation setArgument:args atIndex:i];
+                
+                args += argSize >= MIN_ARG_SIZE ? argSize : MIN_ARG_SIZE;
+            }
             va_end(args);
             [invocation setTarget:target];
             [invocation setSelector:injectSelector];
-            
             
             if (before) { before(invocation); }
             
@@ -129,44 +138,6 @@ type arg = va_arg(argumentList, vaType);\
     method_exchangeImplementations(class_getInstanceMethod(self, selector), class_getInstanceMethod(self, injectSelector));
 
     return YES;
-}
-
-+ (NSInvocation *)bk_invocationWithSignature:(NSMethodSignature *)signature andArgs:(va_list)args
-{
-    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-    
-    for (NSUInteger i = 2; i < [signature numberOfArguments]; i++)
-    {
-        const char *argType = [signature getArgumentTypeAtIndex:i];
-        if (NO) {} // Simplify the macro, make them all else if...
-        assignArgumentIf(id, id, argType, args, i)
-        assignArgumentIf(SEL, SEL, argType, args, i)
-        assignArgumentIf(Class, Class, argType, args, i)
-        assignArgumentIf(char, int, argType, args, i)
-        assignArgumentIf(unsigned char, int, argType, args, i)
-        assignArgumentIf(int, int, argType, args, i)
-        assignArgumentIf(bool, int, argType, args, i)
-        assignArgumentIf(BOOL, int, argType, args, i)
-        assignArgumentIf(short, int, argType, args, i)
-        assignArgumentIf(unichar, int, argType, args, i)
-        assignArgumentIf(float, double, argType, args, i)
-        assignArgumentIf(double, double, argType, args, i)
-        assignArgumentIf(long, long, argType, args, i)
-        assignArgumentIf(long long, long long, argType, args, i)
-        assignArgumentIf(unsigned int, unsigned int, argType, args, i)
-        assignArgumentIf(unsigned long, unsigned long, argType, args, i)
-        assignArgumentIf(unsigned long long, unsigned long long, argType, args, i)
-        assignArgumentIf(char*, char*, argType, args, i)
-        assignArgumentIf(void*, void*, argType, args, i)
-        assignArgumentIf(CGPoint, CGPoint, argType, args, i)
-        assignArgumentIf(CGRect, CGRect, argType, args, i)
-        else
-        {
-            NSAssert1(NO, @"-- Unhandled type: %s", argType);
-        }
-
-    }
-    return invocation;
 }
 
 

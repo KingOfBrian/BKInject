@@ -17,6 +17,5 @@ The usage is pretty simple:
     }];
     
 
-For more usage, check out the unit tests.
 
 
