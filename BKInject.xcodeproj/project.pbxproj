@@ -48,6 +48,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		864DE816185F7AE000C53C7B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
 		86A1457B185A9631000543F0 /* libBKInject.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBKInject.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		86A1457E185A9631000543F0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		86A1458B185A9631000543F0 /* BKInjectTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BKInjectTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -125,6 +126,7 @@
 		86A14580185A9631000543F0 /* BKInject */ = {
 			isa = PBXGroup;
 			children = (
+				864DE816185F7AE000C53C7B /* README.md */,
 				86A145A4185A9678000543F0 /* NSObject+BKInject.h */,
 				86A145A5185A9678000543F0 /* NSObject+BKInject.m */,
 			);
@@ -498,6 +500,7 @@
 				86A145A0185A9631000543F0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		86A145A1185A9631000543F0 /* Build configuration list for PBXNativeTarget "BKInjectTests" */ = {
 			isa = XCConfigurationList;
@@ -506,6 +509,7 @@
 				86A145A3185A9631000543F0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		86A145CF185A9BDB000543F0 /* Build configuration list for PBXNativeTarget "BKInjectTestsMac" */ = {
 			isa = XCConfigurationList;
@@ -514,6 +518,7 @@
 				86A145D1185A9BDB000543F0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

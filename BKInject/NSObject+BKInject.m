@@ -19,8 +19,6 @@
 typedef void* (^BKInjectReturnBlock)(id self, ...);
 typedef void  (^BKInjectNoReturnBlock)(id self, ...);
 
-static const char *bk_formatForObjCType(const char *type);
-
 #define assignArgumentIf(type, vaType, argType, argumentList, i) \
 else if (!strcmp(argType, @encode(type))) {\
 type arg = va_arg(argumentList, vaType);\
@@ -171,43 +169,6 @@ type arg = va_arg(argumentList, vaType);\
     return invocation;
 }
 
-//+ (NSString *)bk_formatForSignatureArguments:(NSMethodSignature *)signature andSelector:(SEL)selector
-//{
-//    NSArray *selectorParts = [NSStringFromSelector(selector) componentsSeparatedByString:@":"];
-//    NSMutableString *str = [@"" mutableCopy];
-//    for (NSUInteger i = 2; i < [signature numberOfArguments]; i++)
-//    {
-//        const char *argumentType = [signature getArgumentTypeAtIndex:i];
-//
-//        [str appendString:selectorParts[i-2]];
-//        [str appendString:@":"];
-//        [str appendFormat:@"%s", bk_formatForObjCType(argumentType)];
-//        
-//    }
-//    return str;
-//}
-
-+ (BOOL)bk_injectLogMethod:(SEL)selector
-{
-//    NSMethodSignature *signature = [self.class instanceMethodSignatureForSelector:selector];
-    
-    return [self bk_injectMethod:selector before:^(NSInvocation *invocation) {
-//        va_list args;
-//        va_start(args, self);
-//        NSArray *selectorParts = [NSStringFromSelector(selector) componentsSeparatedByString:@":"];
-//
-//        NSMutableString *string = [@"" mutableCopy];
-//
-//        for (NSUInteger i = 2; i < [signature numberOfArguments]; i++)
-//        {
-//            NSString *selPart = selectorParts[i-2];
-//            void* argument = va_arg(args, void*);
-//            NSValue *value = [NSValue value:&argument withObjCType:[signature getArgumentTypeAtIndex:i]];
-//            [string appendFormat:@"%@:%@", selPart,value];
-//        }
-//        NSLog(@"%@", string);
-    } after:nil];
-}
 
 + (BOOL)bk_injectResetMethod:(SEL)selector
 {
@@ -230,30 +191,3 @@ type arg = va_arg(argumentList, vaType);\
 }
 
 @end
-
-static const char *bk_formatForObjCType(const char *type)
-{
-    if(strcmp(type, @encode(id)) == 0)
-        return "%@";
-    else if(strcmp(type, @encode(BOOL)) == 0)
-        return "%d";
-    else if(strcmp(type, @encode(int)) == 0)
-        return "%d";
-    else if(strcmp(type, @encode(unsigned int)) == 0)
-        return "%u";
-    else if(strcmp(type, @encode(long)) == 0)
-        return "%li";
-    else if(strcmp(type, @encode(unsigned long)) == 0)
-        return "%lu";
-    else if(strcmp(type, @encode(long long)) == 0)
-        return "%lli";
-    else if(strcmp(type, @encode(unsigned long long)) == 0)
-        return "%llu";
-    else if(strcmp(type, @encode(float)) == 0)
-        return "%f";
-    else if(strcmp(type, @encode(double)) == 0)
-        return "%f";
-    else
-        return "%d";
-}
-

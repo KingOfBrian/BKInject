@@ -23,7 +23,4 @@ typedef void (^BKInjectBlock)(NSInvocation *invocation);
  */
 + (BOOL)bk_injectResetMethod:(SEL)selector;
 
-
-+ (BOOL)bk_injectLogMethod:(SEL)selector;
-
 @end
