@@ -19,8 +19,11 @@ typedef void  (^BKInjectNoReturnBlock)(id self, ...);
 
 #define MIN_ARG_SIZE 4
 
-
-
+#define assignArgumentIf(type, vaType, argType, args, i) \
+else if (!strcmp(argType, @encode(type))) {\
+vaType arg = va_arg(args, vaType);\
+[invocation setArgument:&arg atIndex:i];\
+}
 
 @implementation NSObject (BKInject)
 
@@ -62,13 +65,13 @@ typedef void  (^BKInjectNoReturnBlock)(id self, ...);
             va_list args;
             va_start(args, target);
             NSInvocation *invocation = [self bk_invocationWithSignature:signature target:target selector:injectSelector andArgs:args];
-            va_end(args);
             
             if (before) { before(invocation); }
             
             [invocation invoke];
             
             if (after)  { after(invocation);  }
+            va_end(args);
         };
         internalBlock = voidBlock;
     }
@@ -124,24 +127,48 @@ typedef void  (^BKInjectNoReturnBlock)(id self, ...);
 + (NSInvocation *)bk_invocationWithSignature:(NSMethodSignature *)signature target:(id)target selector:(SEL)selector andArgs:(va_list)args
 {
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-    
     for (NSUInteger i = 2; i < [signature numberOfArguments]; i++)
     {
-        [invocation setArgument:args atIndex:i];
-        
         const char *argType = [signature getArgumentTypeAtIndex:i];
-        NSUInteger argSize;
-        NSGetSizeAndAlignment(argType, &argSize, NULL);
-        
-        NSUInteger intSize = MAX(1,argSize/sizeof(int));
-        if (intSize == 1)
-            va_arg(args, int);
-        else if (intSize == 2)
-            va_arg(args, int[2]);
-        else if (intSize == 3)
-            va_arg(args, int[3]);
-        else if (intSize == 4)
-            va_arg(args, int[4]);
+        NSUInteger bufferSize = 0;
+        NSGetSizeAndAlignment(argType, &bufferSize, NULL);
+
+        // 32 bit simulator has a bug with the (ugly) and cross-platform method of assigning args.
+        // It does however have a simple, non-cross-platform method of doing it.
+#if TARGET_IPHONE_SIMULATOR && __LP64__ == NO
+        [invocation setArgument:args atIndex:i ];
+
+        args += MAX(MIN_ARG_SIZE,bufferSize);
+#else
+        // This makes me cry.  Many holes and huge/ugly
+        if (NO) {}
+        assignArgumentIf(bool, int, argType, args, i)
+        assignArgumentIf(BOOL, int, argType, args, i)
+        assignArgumentIf(id, id, argType, args, i)
+        assignArgumentIf(SEL, SEL, argType, args, i)
+        assignArgumentIf(Class, Class, argType, args, i)
+        assignArgumentIf(char, int, argType, args, i)
+        assignArgumentIf(const char*, int*, argType, args, i)
+        assignArgumentIf(unsigned char, int, argType, args, i)
+        assignArgumentIf(int, int, argType, args, i)
+        assignArgumentIf(short, int, argType, args, i)
+        assignArgumentIf(unichar, int, argType, args, i)
+        assignArgumentIf(float, double, argType, args, i)
+        assignArgumentIf(double, double, argType, args, i)
+        assignArgumentIf(long, long, argType, args, i)
+        assignArgumentIf(long long, long long, argType, args, i)
+        assignArgumentIf(unsigned int, unsigned int, argType, args, i)
+        assignArgumentIf(unsigned long, unsigned long, argType, args, i)
+        assignArgumentIf(unsigned long long, unsigned long long, argType, args, i)
+        assignArgumentIf(char*, char*, argType, args, i)
+        assignArgumentIf(void*, void*, argType, args, i)
+        assignArgumentIf(CGPoint, CGPoint, argType, args, i)
+        assignArgumentIf(CGRect, CGRect, argType, args, i)
+        else
+        {
+            [NSException raise:NSInvalidArgumentException format:@"Unknown type encoding %@", [NSString stringWithCString:argType encoding:NSASCIIStringEncoding]];
+        }
+#endif
     }
     [invocation setTarget:target];
     [invocation setSelector:selector];

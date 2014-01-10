@@ -44,10 +44,11 @@
 {
     return 88;
 }
+
 - (void)testBool:(BOOL)a float:(float)b int:(NSUInteger)c rect:(CGRect)d string:(NSString *)e selector:(SEL)f point:(CGPoint)g char:(const char *)h
 {
+    self.value = [NSString stringWithFormat:@"a=%d,b=%f,c=%zd,d=%@,e=%@,f=%@,g=%@,h=%s", a, b, c, NSStringFromCGRect(d), e, NSStringFromSelector(f), NSStringFromCGPoint(g), h];
 }
-
 
 @end
 
@@ -296,18 +297,20 @@
     }];
     
     Foo *foo = [[Foo alloc] init];
-    [foo testBool:NO float:3.14159 int:7 rect:CGRectMake(1,2,3,4) string:@"Hey" selector:@selector(testNilBullocks) point:CGPointMake(10, 20) char:"1234"];
+    [foo testBool:YES float:3.14159 int:7 rect:CGRectMake(1,2,3,4) string:@"Hey" selector:@selector(testNilBullocks) point:CGPointMake(10, 20) char:"1234"];
+    XCTAssertTrue([foo.value isEqualToString:@"a=1,b=3.141590,c=7,d={{1, 2}, {3, 4}},e=Hey,f=testNilBullocks,g={10, 20},h=1234"], @"");
+    
+    XCTAssertTrue(a == YES && fabs(b - 3.14159) < 0.001 && c == 7, @"");
+    XCTAssertTrue([e isEqualToString:@"Hey"], @"");
+    XCTAssertTrue([NSStringFromSelector(f) isEqualToString:@"testNilBullocks"], @"");
+    XCTAssertTrue(strcmp(h, "1234") == 0, @"");
 
-    XCTAssertTrue(a == NO && fabs(b - 3.14159) < 0.001 && c == 7, @"");
+    XCTAssertTrue(g.x == 10 && g.y == 20, @"");
     XCTAssertTrue(d.origin.x == 1 &&
                   d.origin.y == 2 &&
                   d.size.width == 3 &&
                   d.size.height == 4, @"");
-    XCTAssertTrue([e isEqualToString:@"Hey"], @"");
-    XCTAssertTrue([NSStringFromSelector(f) isEqualToString:@"testNilBullocks"], @"");
-    XCTAssertTrue(g.x == 10 && g.y == 20, @"");
-    XCTAssertTrue(strcmp(h, "1234") == 0, @"");
-    
+
     [Foo bk_injectResetMethod:@selector(testBool:float:int:rect:string:selector:point:char:)];
 
 }
